@@ -10,6 +10,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "d3": "^7.6.1",
     "moment": "^2.29.4",
     "vue": "^3.2.37",
@@ -18,7 +19,8 @@
     "vue-simple-spinner": "^1.2.10",
     "vue-spinner": "^1.0.4",
     "vue3-clipboard": "^1.0.0",
-    "vuex": "^4.0.2"
+    "vuex": "^4.0.2",
+    "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.0",

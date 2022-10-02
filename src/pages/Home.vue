@@ -7,20 +7,10 @@ export default {
     loginComponent,
     postsComponentVue,
   },
-  data() {
-    return {
-      loggedIn: localStorage.getItem("token") ? true : false,
-    };
-  },
-  methods: {
-    logout() {
-      this.loggedIn = false;
-    },
-  },
 };
 </script>
 
 <template>
-  <loginComponent v-if="!loggedIn" :login="login" />
-  <postsComponentVue v-else :logout="logout" />
+  <loginComponent v-if="!this.$store.state.loggedIn" />
+  <postsComponentVue v-else />
 </template>

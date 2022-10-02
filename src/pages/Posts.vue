@@ -5,17 +5,18 @@ import singlePostComponentVue from "./singlePostComponent.vue";
 import { copyText } from "vue3-clipboard";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 import { event } from "vue-gtag";
+import Navbar from "./Navbar/Navbar.vue";
 export default {
   components: {
     singlePostComponentVue,
     PulseLoader,
+    Navbar,
   },
   async beforeMount() {
     event("view_posts", {
       event_category: "posts",
       event_label: "view_posts",
     });
-    console.log("Sent view_posts event");
     if (Date.now() > localStorage.getItem("expiration")) {
       await fetch(
         "https://warm-scrubland-06418.herokuapp.com/https://securetoken.googleapis.com/v1/token?key=AIzaSyDwjfEeparokD7sXPVQli9NsTuhT6fJ6iA",
@@ -109,6 +110,23 @@ export default {
       //   .then((data) => {
       //     this.memories = data.data;
       //   }),
+      fetch(
+        "https://warm-scrubland-06418.herokuapp.com/https://mobile.bereal.com/api/person/me",
+        {
+          method: "GET",
+          headers: {
+            accept: "application/json",
+            "content-type": "application/json",
+            "user-agent": "BeReal/7242 CFNetwork/1333.0.4 Darwin/21.5.0",
+            "accept-language": "en-US,en;q=0.9",
+            authorization: localStorage.getItem("token") ?? "",
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          this.user = data;
+        }),
     ])
       .then(() => {
         this.isfetch = false;
@@ -127,6 +145,7 @@ export default {
       posts: [],
       friends: [],
       memories: [],
+      user: [],
       isfetch: true,
     };
   },
@@ -135,10 +154,37 @@ export default {
       return moment().format("MMMM Do YYYY, h:mm:ss a");
     },
   },
+  computed: {
+    UserPosted() {
+      if (this.posts.length > 0) {
+        console.log("here");
+        var base64Url = localStorage.getItem("token");
+        base64Url = base64Url.split(".")[1];
+        var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+        var jsonPayload = decodeURIComponent(
+          window
+            .atob(base64)
+            .split("")
+            .map(function (c) {
+              return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+            })
+            .join("")
+        );
+
+        var my_id = JSON.parse(jsonPayload).user_id;
+        return this.posts.filter((post) => post.ownerID === my_id).length > 0;
+      }
+    },
+  },
 };
 </script>
 <template>
   <!-- print time right now with moment -->
+  <Navbar />
+  <div
+    v-if="!UserPosted"
+    class="flex flex-col justify-center items-center dark:text-white"
+  ></div>
   <div
     v-for="post in posts"
     v-if="!isfetch"

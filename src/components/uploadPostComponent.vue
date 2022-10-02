@@ -3,15 +3,8 @@ import { defineComponent } from "vue";
 import moment from "moment";
 
 export default {
-  props: ["friend", "post"],
   data() {
-    return {
-      iframesrc: this.post.location
-        ? `https://www.google.com/maps/embed/v1/place?key=AIzaSyDPvCQ4RXgvhbboTmKh2qLnfY50aJxcD0E&q=${this.post.location._latitude}, ${this.post.location._longitude}`
-        : "",
-      reverseGeo: "",
-      revbgeo: "",
-    };
+    return;
   },
   methods: {
     postdate() {
@@ -19,7 +12,6 @@ export default {
         "MM-DD-YYYY h:mm:ss"
       );
     },
-
     boldusername(s) {
       return s.replace(
         /@\w+/g,
@@ -95,17 +87,17 @@ export default {
         </div>
 
         <!-- <iframe
-          class="ml-3"
-          width="400"
-          height="300"
-          style="border: 0"
-          loading="lazy"
-          v-if="post.location"
-          allowfullscreen
-          referrerpolicy="no-referrer-when-downgrade"
-          :src="iframesrc"
-        >
-        </iframe> -->
+              class="ml-3"
+              width="400"
+              height="300"
+              style="border: 0"
+              loading="lazy"
+              v-if="post.location"
+              allowfullscreen
+              referrerpolicy="no-referrer-when-downgrade"
+              :src="iframesrc"
+            >
+            </iframe> -->
       </div>
       <div class="flex items-center justify-center flex-col mt-4 sm:flex-row">
         <img
